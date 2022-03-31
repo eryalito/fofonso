@@ -11,5 +11,6 @@ class CustomHandler(CommandHandler):
 
     def pre_command(self, update: Update, context: CallbackContext):
         self.dbw.add_user(update.effective_message.from_user.id, update.effective_message.from_user.username)
-        if update.effective_chat.type == 'group':
+        print(update.effective_chat.type)
+        if update.effective_chat.type == 'group' or update.effective_chat.type == 'supergroup':
             self.dbw.add_user_to_group(update.effective_message.from_user.id, update.effective_chat.id)

@@ -18,7 +18,7 @@ class AllHandler(CustomHandler):
     def run(self, update: Update, context: CallbackContext):
         logging.info(self.COMMAND + ' command has been called: ' + str(update.effective_chat.id))
         self.pre_command(update, context)
-        if update.effective_message.chat.type == 'group':
+        if update.effective_message.chat.type == 'group' or update.effective_message.chat.type == 'supergroup':
             users_str = ''
             for user in self.dbw.get_users_in_group(update.effective_chat.id):
                 if 'username' in user:
