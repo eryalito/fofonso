@@ -7,22 +7,22 @@ from telegram.ext import CallbackContext, Updater
 from handlers.custom_handler import CustomHandler
 
 
-class AdminsHandler(CustomHandler):
+class AllHandler(CustomHandler):
 
-    COMMAND = 'admins'
+    COMMAND = 'all'
 
     def __init__(self, dbw: DBWrapper, updater: Updater):
-        super(AdminsHandler, self).__init__(self.COMMAND, self.run, dbw)
+        super(AllHandler, self).__init__(self.COMMAND, self.run, dbw)
         self.updater = updater
 
     def run(self, update: Update, context: CallbackContext):
-        logging.info(self.COMMAND + " command has been called: " + str(update.effective_chat.id))
+        logging.info(self.COMMAND + ' command has been called: ' + str(update.effective_chat.id))
         self.pre_command(update, context)
         if update.effective_message.chat.type == 'group':
-            users_str = ""
-            for admin in self.updater.bot.getChatAdministrators(update.effective_chat.id):
-                if admin.user.username is not None:
-                    users_str += '@' + admin.user.username + ' '
+            users_str = ''
+            for user in self.dbw.get_users_in_group(update.effective_chat.id):
+                if 'username' in user:
+                    users_str += '@' + user['username'] + ' '
             if users_str:
                 users_str = users_str[:-1]
                 self.updater.bot.send_message(update.effective_chat.id, users_str)
