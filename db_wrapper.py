@@ -25,6 +25,7 @@ class DBWrapper:
 
     def add_user(self, id: int, username: str):
         cursor = self.con.cursor()
+        logging.debug("Inserting user :user", {"user": username})
         cursor.execute("SELECT id FROM `user` WHERE id=:id", {"id": id})
         if cursor.fetchone() is None:
             cursor.execute("INSERT INTO `user` VALUES (:id, :username)", {"id": id, "username": username})
