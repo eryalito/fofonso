@@ -49,3 +49,8 @@ class DBWrapper:
         cursor = self.con.cursor()
         cursor.execute("SELECT id,username FROM `user` left join `user_in_group` on `user`.`id`=`user_in_group`.`user_id` WHERE group_id=:id", {"id": group_id})
         return cursor.fetchall()
+
+    def clean_users_from_group(self, group_id: int):
+        cursor = self.con.cursor()
+        cursor.execute('DELETE FROM `user_in_group` WHERE group_id=:group_id', {"group_id": group_id})
+        self.con.commit()
