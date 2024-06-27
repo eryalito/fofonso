@@ -3,7 +3,7 @@ import logging
 from db_wrapper import DBWrapper
 from telegram import Update
 from telegram.ext import CallbackContext, Updater, Filters
-from handlers.custom_handler import CustomMessageHandler
+from handlers.user.custom_handler import CustomMessageHandler
 
 class VoidHandler(CustomMessageHandler):
 

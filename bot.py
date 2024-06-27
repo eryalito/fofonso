@@ -4,8 +4,8 @@ import os
 from telegram.ext import Updater
 
 from db_wrapper import DBWrapper
-from handlers.admins import AdminsHandler
-from handlers.all import AllHandler
+from handlers.user.admins import AdminsHandler
+from handlers.user.all import AllHandler
 from handlers.void import VoidHandler
 from handlers.admin.reset import ResetHandler
 from handlers.admin.variable import VariableHandler

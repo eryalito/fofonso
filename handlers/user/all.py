@@ -4,7 +4,7 @@ from db_wrapper import DBWrapper
 from telegram import Update
 from telegram.ext import CallbackContext, Updater
 
-from handlers.custom_handler import CustomHandler
+from handlers.user.custom_handler import CustomHandler
 
 
 class AllHandler(CustomHandler):
