@@ -8,6 +8,7 @@ from handlers.admins import AdminsHandler
 from handlers.all import AllHandler
 from handlers.void import VoidHandler
 from handlers.admin.reset import ResetHandler
+from handlers.admin.variable import VariableHandler
 
 TOKEN = os.environ.get("TOKEN")
 LOG_LEVEL = os.environ.get("LOG_LEVEL")
@@ -21,7 +22,7 @@ dbw = DBWrapper(DB_FILE)
 updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 COMMANDS = [AdminsHandler(dbw, updater), AllHandler(dbw, updater),
-            ResetHandler(dbw, updater),
+            ResetHandler(dbw, updater), VariableHandler(dbw, updater),
             VoidHandler(dbw, updater)]
 
 for command in COMMANDS:
