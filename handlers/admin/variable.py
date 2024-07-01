@@ -1,5 +1,6 @@
 import logging
 import re
+from handlers import utils
 
 from db_wrapper import DBWrapper
 from telegram import Update
@@ -11,9 +12,9 @@ from handlers.admin.admin_default_handler import AdminDefaultHandler
 class VariableHandler(AdminDefaultHandler):
 
     COMMAND = 'variable'
-    SET_REGEX = re.compile(r'[a-z]+[\s]+([^,]+,?)+') # "variable val1,val2,val3"
-    GET_REGEX = re.compile(r'[a-z]+') # "variable"
-    CLEAR_REGEX = re.compile(r'[a-z]+') # "variable"
+    SET_REGEX = re.compile(r'[a-z0-9-]+[\s]+([^,]+,?)+') # "variable val1,val2,val3"
+    GET_REGEX = re.compile(r'[a-z0-9-]+') # "variable"
+    CLEAR_REGEX = re.compile(r'[a-z0-9-]+') # "variable"
     update = None
 
 
@@ -26,22 +27,21 @@ class VariableHandler(AdminDefaultHandler):
         logging.info(self.COMMAND + " command has been called: " + str(update.effective_chat.id))
         if not self.is_valid(update, context):
             return
-        
-        # remove initial command structure `/variable`
-        length = 1 + len(self.COMMAND)
-        command = update.message.text
-        if len(command) < length:
+
+        subcommand = utils.get_subcommand_from_command(self.COMMAND, update.message.text)
+        if subcommand is None:
             return
         
-        subcommand = command[length:].strip()
-        operator = subcommand.split(" ")[0]
+        operator = subcommand["operator"]
         logging.debug("Operator: " + operator)
         if operator == "set":
-            self.set_variable(subcommand)
+            self.set_variable(subcommand["subcommand"])
         if operator == "get":
-            self.get_variable(subcommand)
+            self.get_variable(subcommand["subcommand"])
         if operator == "clear":
-            self.clear_variable(subcommand)
+            self.clear_variable(subcommand["subcommand"])
+        if operator == "list":
+            self.list_variables(subcommand["subcommand"])
 
     def set_variable(self, subcommand: str):
         processed_command = subcommand.strip()[3:].strip()
@@ -74,8 +74,20 @@ class VariableHandler(AdminDefaultHandler):
         variable_name = processed_command
         values = self.dbw.get_variable_on_group(self.update.effective_chat.id, variable_name)
         if values == None:
+            self.updater.bot.send_message(self.update.effective_chat.id, "Variable not found")
             return
         value = ""
         for val in values:
             value += val + "\n"
+        self.updater.bot.send_message(self.update.effective_chat.id, value)
+
+
+    def list_variables(self, subcommand: str):
+        values = self.dbw.get_all_variables_on_group(self.update.effective_chat.id)
+        if values == None:
+            self.updater.bot.send_message(self.update.effective_chat.id, "No variables found")
+            return
+        value = ""
+        for val in values:
+            value += val.name + "\n"
         self.updater.bot.send_message(self.update.effective_chat.id, value)

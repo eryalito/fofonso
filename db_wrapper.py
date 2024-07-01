@@ -87,6 +87,21 @@ class DBWrapper:
         obj.name = data["name"]
         obj.values = data["values"]
         return obj.values
+    
+    def get_all_variables_on_group(self, group_id: int):
+        cursor = self.con.cursor()
+        cursor.execute("SELECT value FROM `variable` WHERE group_id=:id", {"id": group_id})
+        result = cursor.fetchall()
+        if result is None:
+            return None
+        objs = []
+        for value in result:
+            data = json.loads(str(value["value"]))
+            obj = Variable()
+            obj.name = data["name"]
+            obj.values = data["values"]
+            objs.append(obj)
+        return objs
 
     def clean_variable_from_group(self, group_id: int, variable: str):
         cursor = self.con.cursor()
