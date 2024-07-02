@@ -11,6 +11,7 @@ from handlers.user.void import VoidHandler
 from handlers.user.dice import DiceHandler
 from handlers.admin.reset import ResetHandler
 from handlers.admin.variable import VariableHandler
+from handlers.admin.format import FormatHandler
 
 
 TOKEN = os.environ.get("TOKEN")
@@ -26,7 +27,7 @@ updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
 COMMANDS = [HelpHandler(dbw,updater),
             AdminsHandler(dbw, updater), AllHandler(dbw, updater), DiceHandler(dbw, updater),
-            ResetHandler(dbw, updater), VariableHandler(dbw, updater),
+            ResetHandler(dbw, updater), VariableHandler(dbw, updater), FormatHandler(dbw, updater),
             VoidHandler(dbw, updater)]
 
 for command in COMMANDS:

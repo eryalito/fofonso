@@ -31,6 +31,7 @@ Group Commands
 Group Admin Commands
 /reset - Reset the user list of the group (Use when a user left the group or change the @)
 /variable <list|set|get|clear> [name] [value] - Handle variable values
+/format <text> - Format the given text, allows variables usage.
 
 For more information on each command, type the command /help <command>.
 
@@ -87,6 +88,23 @@ This command have a set of subcommands to properly handle variables.
 
 /variable set <name> <value> - Set the value for the variable with that name. For multiple values separate them by comma (e.g. /variable set <name> <val1>,<val2>)
 
+        ''',
+        "format": '''
+[Group Only - Admin]
+
+Format the given text and send it back to the chat as a message. It allow using variable values.
+
+Example:
+
+/format My message - The message would be "My message"
+
+Using variables:
+
+Supposing the variable "var1" has the value "value1"
+
+/format Value {var1} - The message would be "Value value1"
+
+Note: When the variable contains multiple values a random value would be selected.
         '''
     }
 
