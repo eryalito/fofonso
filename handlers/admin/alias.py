@@ -12,9 +12,9 @@ from handlers.admin.admin_default_handler import AdminDefaultHandler
 class AliasHandler(AdminDefaultHandler):
 
     COMMAND = 'alias'
-    SET_REGEX = re.compile(r'[a-z0-9-]+[\s].+') # "alias text"
-    GET_REGEX = re.compile(r'[a-z0-9-]+') # "alias"
-    CLEAR_REGEX = re.compile(r'[a-z0-9-]+') # "alias"
+    SET_REGEX = re.compile(r'[a-z0-9_]+[\s].+') # "alias text"
+    GET_REGEX = re.compile(r'[a-z0-9_]+') # "alias"
+    CLEAR_REGEX = re.compile(r'[a-z0-9_]+') # "alias"
     update = None
 
 

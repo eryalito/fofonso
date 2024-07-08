@@ -10,7 +10,7 @@ from handlers import utils
 class ExclamationHandler(CustomMessageHandler):
 
     COMMAND = "exclamation"
-    MATCH_REGEX = "^![a-z0-9-]+$"
+    MATCH_REGEX = "^![a-z0-9_]+$"
 
     
     def __init__(self, dbw: DBWrapper, updater: Updater):

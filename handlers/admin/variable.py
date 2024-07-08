@@ -12,9 +12,9 @@ from handlers.admin.admin_default_handler import AdminDefaultHandler
 class VariableHandler(AdminDefaultHandler):
 
     COMMAND = 'variable'
-    SET_REGEX = re.compile(r'[a-z0-9-]+[\s]+([^,]+,?)+') # "variable val1,val2,val3"
-    GET_REGEX = re.compile(r'[a-z0-9-]+') # "variable"
-    CLEAR_REGEX = re.compile(r'[a-z0-9-]+') # "variable"
+    SET_REGEX = re.compile(r'[a-z0-9_]+[\s]+([^,]+,?)+') # "variable val1,val2,val3"
+    GET_REGEX = re.compile(r'[a-z0-9_]+') # "variable"
+    CLEAR_REGEX = re.compile(r'[a-z0-9_]+') # "variable"
     update = None
 
 
