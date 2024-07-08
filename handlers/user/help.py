@@ -27,11 +27,13 @@ General Commands
 Group Commands
 /admins - Send a message atting all of the admins of the group
 /all - Send a message atting all of the users on the group
+!<name> - Exclamation command invokes an alias text. More into on /help !
 
 Group Admin Commands
 /reset - Reset the user list of the group (Use when a user left the group or change the @)
 /variable <list|set|get|clear> [name] [value] - Handle variable values
 /format <text> - Format the given text, allows variables usage.
+/alias <list|set|get|clear> [name] [value] - Handle alias values
 
 For more information on each command, type the command /help <command>.
 
@@ -105,6 +107,38 @@ Supposing the variable "var1" has the value "value1"
 /format Value {var1} - The message would be "Value value1"
 
 Note: When the variable contains multiple values a random value would be selected.
+        ''',
+        "alias": '''
+[Group Only - Admin]
+
+Handle alias on the group. An alias is a key-value element same as variables. Names of the alias can only be lowercase, numbers or underscore (_). Values can be any text.
+Aliases are used on the exclamation command so any user can invoke the value as it was the text on the /format command, it allows using variables.
+
+Example: the variable "var" exists with value "value1". Create the alias "my_alias" with value "Test: {var}" (/alias set my_alias Test: {var}). To render the alias use the exclamation with the alias name (!my_alias), it will print the same as running /format Test: {var} (Test: value1)
+
+This command have a set of subcommands to properly handle variables.
+
+/alias list - List all of the alias on the group. Just the list of the names
+
+/alias get <name> - Gets the value(s) of the alias with that name
+
+/alias clear <name> - Deletes the alias with that name
+
+/alias set <name> <value> - Set the value for the alias with that name
+
+        ''',
+        "!": '''
+[Group Only]
+
+The exclamation command works similar to the /format one, but text to format can't be provided. An admin must define an alias naming a text to format so it can be used using the exclamation operator.
+
+To format an alias use the exclamation alongside the alias name: !<aliasname>
+
+Example: 
+
+1. Admin create the equivalent alias for a format text /alias set my_name Format text!
+2. All users can use the !my_name, which is equivalent to "/format Format text!" but without admin permissions.
+
         '''
     }
 
