@@ -84,7 +84,7 @@ class VariableHandler(AdminDefaultHandler):
 
     def list_variables(self, subcommand: str):
         values = self.dbw.get_all_variables_on_group(self.update.effective_chat.id)
-        if values == None:
+        if values == None or len(values) == 0:
             self.updater.bot.send_message(self.update.effective_chat.id, "No variables found")
             return
         value = ""
