@@ -39,6 +39,7 @@ For more information on each command, type the command /help <command>.
 
 Please use the /help command in a private chat.
 
+Check me out at /github
 '''
 
     EXPLANATIONS = {
