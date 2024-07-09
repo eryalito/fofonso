@@ -12,7 +12,7 @@ class AdminDefaultHandler(CustomHandler):
     def __init__(self, command: str, dbw: DBWrapper, updater: Updater):
         super(AdminDefaultHandler, self).__init__(command, self.run, dbw)
         self.updater = updater
-    
+
     def is_valid(self, update: Update, context: CallbackContext) -> bool:
         is_admin = False
         self.pre_command(update, context)

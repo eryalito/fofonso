@@ -3,6 +3,7 @@ import logging
 import sqlite3
 import json
 
+
 class Variable:
     name: str = ""
     values = []
@@ -79,7 +80,7 @@ class DBWrapper:
         if cursor.fetchone() is None:
             cursor.execute("INSERT INTO `variable` VALUES (:group_id, :name, :value)", {"group_id": group_id, "name": variable, "value": obj_str})
         else:
-            cursor.execute("UPDATE `variable`set value=:value where group_id=:group_id AND name=:name",  {"group_id": group_id, "name": variable, "value": obj_str})
+            cursor.execute("UPDATE `variable`set value=:value where group_id=:group_id AND name=:name", {"group_id": group_id, "name": variable, "value": obj_str})
         self.con.commit()
 
     def get_variable_on_group(self, group_id: int, variable: str) -> List[str]:
@@ -93,7 +94,7 @@ class DBWrapper:
         obj.name = data["name"]
         obj.values = data["values"]
         return obj.values
-    
+
     def get_all_variables_on_group(self, group_id: int) -> List[Variable]:
         cursor = self.con.cursor()
         cursor.execute("SELECT value FROM `variable` WHERE group_id=:id", {"id": group_id})
@@ -121,7 +122,7 @@ class DBWrapper:
         if cursor.fetchone() is None:
             cursor.execute("INSERT INTO `alias` VALUES (:group_id, :name, :value)", {"group_id": group_id, "name": alias, "value": value})
         else:
-            cursor.execute("UPDATE `alias`set value=:value where group_id=:group_id AND name=:name",  {"group_id": group_id, "name": alias, "value": value})
+            cursor.execute("UPDATE `alias`set value=:value where group_id=:group_id AND name=:name", {"group_id": group_id, "name": alias, "value": value})
         self.con.commit()
 
     def get_alias_on_group(self, group_id: int, alias: str) -> Alias:
@@ -131,10 +132,10 @@ class DBWrapper:
         if value is None:
             return None
         obj = Alias()
-        obj.name=alias
-        obj.value=value["value"]
+        obj.name = alias
+        obj.value = value["value"]
         return obj
-    
+
     def get_all_aliases_on_group(self, group_id: int) -> List[Alias]:
         cursor = self.con.cursor()
         cursor.execute("SELECT name,value FROM `alias` WHERE group_id=:id", {"id": group_id})

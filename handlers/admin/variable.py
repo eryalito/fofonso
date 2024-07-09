@@ -13,11 +13,10 @@ from handlers.admin.admin_default_handler import AdminDefaultHandler
 class VariableHandler(AdminDefaultHandler):
 
     COMMAND = 'variable'
-    SET_REGEX = re.compile(r'[a-z0-9_]+[\s]+([^,]+,?)+') # "variable val1,val2,val3"
-    GET_REGEX = re.compile(r'[a-z0-9_]+') # "variable"
-    CLEAR_REGEX = re.compile(r'[a-z0-9_]+') # "variable"
+    SET_REGEX = re.compile(r'[a-z0-9_]+[\s]+([^,]+,?)+')  # "variable val1,val2,val3"
+    GET_REGEX = re.compile(r'[a-z0-9_]+')  # "variable"
+    CLEAR_REGEX = re.compile(r'[a-z0-9_]+')  # "variable"
     update = None
-
 
     def __init__(self, dbw: DBWrapper, updater: Updater):
         super(VariableHandler, self).__init__(self.COMMAND, dbw, updater)
@@ -32,7 +31,7 @@ class VariableHandler(AdminDefaultHandler):
         subcommand = utils.get_subcommand_from_command(self.COMMAND, update.message.text)
         if subcommand is None:
             return
-        
+
         operator = subcommand["operator"]
         logging.debug("Operator: " + operator)
         if operator == "set":
@@ -46,7 +45,7 @@ class VariableHandler(AdminDefaultHandler):
 
     def set_variable(self, subcommand: str):
         processed_command = subcommand.strip()[3:].strip()
-        if self.SET_REGEX.match(processed_command) == None:
+        if self.SET_REGEX.match(processed_command) is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Invalid command syntax. Example:\n\n/variable set valname val1,val2,val3")
             return
 
@@ -70,7 +69,7 @@ class VariableHandler(AdminDefaultHandler):
 
     def clear_variable(self, subcommand: str):
         processed_command = subcommand.strip()[5:].strip()
-        if self.CLEAR_REGEX.match(processed_command) == None:
+        if self.CLEAR_REGEX.match(processed_command) is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Invalid command syntax. Example:\n\n/variable clear valname")
             return
 
@@ -80,13 +79,13 @@ class VariableHandler(AdminDefaultHandler):
 
     def get_variable(self, subcommand: str):
         processed_command = subcommand.strip()[3:].strip()
-        if self.GET_REGEX.match(processed_command) == None:
+        if self.GET_REGEX.match(processed_command) is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Invalid command syntax. Example:\n\n/variable get valname")
             return
 
         variable_name = processed_command
         values = self.dbw.get_variable_on_group(self.update.effective_chat.id, variable_name)
-        if values == None:
+        if values is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Variable not found")
             return
         value = ""
@@ -94,10 +93,9 @@ class VariableHandler(AdminDefaultHandler):
             value += val + "\n"
         self.updater.bot.send_message(self.update.effective_chat.id, value)
 
-
     def list_variables(self, subcommand: str):
         values = self.dbw.get_all_variables_on_group(self.update.effective_chat.id)
-        if values == None or len(values) == 0:
+        if values is None or len(values) == 0:
             self.updater.bot.send_message(self.update.effective_chat.id, "No variables found")
             return
         value = ""

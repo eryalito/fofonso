@@ -5,11 +5,11 @@ from telegram import Update
 from telegram.ext import CallbackContext, Updater, Filters
 from handlers.user.custom_handler import CustomMessageHandler
 
+
 class VoidHandler(CustomMessageHandler):
 
     COMMAND = "void"
 
-    
     def __init__(self, dbw: DBWrapper, updater: Updater):
         super(VoidHandler, self).__init__(Filters.all, self.run, dbw)
         self.updater = updater

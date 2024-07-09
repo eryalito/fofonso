@@ -28,9 +28,9 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 dbw = DBWrapper(DB_FILE)
 updater = Updater(TOKEN, use_context=True)
 dispatcher = updater.dispatcher
-COMMANDS = [HelpHandler(dbw,updater),
+COMMANDS = [HelpHandler(dbw, updater),
             # Admins
-            AdminsHandler(dbw, updater), AllHandler(dbw, updater), DiceHandler(dbw, updater), AliasHandler(dbw,updater),
+            AdminsHandler(dbw, updater), AllHandler(dbw, updater), DiceHandler(dbw, updater), AliasHandler(dbw, updater),
             # User
             ResetHandler(dbw, updater), VariableHandler(dbw, updater), FormatHandler(dbw, updater), GithubHandler(dbw, updater),
             # Exclamation command

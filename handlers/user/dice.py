@@ -12,8 +12,8 @@ from handlers.user.custom_handler import CustomHandler
 class DiceHandler(CustomHandler):
 
     COMMAND = 'dice'
-    COMMAND_LENGTH = len(COMMAND) + 1 # /COMMAND
-    REGEX = re.compile(r'[\d]+ [\d]+') # "min max"
+    COMMAND_LENGTH = len(COMMAND) + 1  # /COMMAND
+    REGEX = re.compile(r'[\d]+ [\d]+')  # "min max"
     DICE_MIN = 1
     DICE_MAX = 6
 
@@ -37,7 +37,5 @@ class DiceHandler(CustomHandler):
             if min >= max:
                 self.updater.bot.send_message(update.effective_chat.id, "Min must be lower then Max")
                 return
-        
         rand = random.randint(min, max)
         self.updater.bot.send_message(update.effective_chat.id, str(rand))
-

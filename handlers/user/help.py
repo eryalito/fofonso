@@ -135,11 +135,10 @@ The exclamation command works similar to the /format one, but text to format can
 
 To format an alias use the exclamation alongside the alias name: !<aliasname>
 
-Example: 
+Example:
 
 1. Admin create the equivalent alias for a format text /alias set my_name Format text!
 2. All users can use the !my_name, which is equivalent to "/format Format text!" but without admin permissions.
-
         '''
     }
 

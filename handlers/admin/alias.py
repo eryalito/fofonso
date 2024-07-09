@@ -13,11 +13,10 @@ from handlers.admin.admin_default_handler import AdminDefaultHandler
 class AliasHandler(AdminDefaultHandler):
 
     COMMAND = 'alias'
-    SET_REGEX = re.compile(r'[a-z0-9_]+[\s].+') # "alias text"
-    GET_REGEX = re.compile(r'[a-z0-9_]+') # "alias"
-    CLEAR_REGEX = re.compile(r'[a-z0-9_]+') # "alias"
+    SET_REGEX = re.compile(r'[a-z0-9_]+[\s].+')  # "alias text"
+    GET_REGEX = re.compile(r'[a-z0-9_]+')  # "alias"
+    CLEAR_REGEX = re.compile(r'[a-z0-9_]+')  # "alias"
     update = None
-
 
     def __init__(self, dbw: DBWrapper, updater: Updater):
         super(AliasHandler, self).__init__(self.COMMAND, dbw, updater)
@@ -32,7 +31,7 @@ class AliasHandler(AdminDefaultHandler):
         subcommand = utils.get_subcommand_from_command(self.COMMAND, update.message.text)
         if subcommand is None:
             return
-        
+
         operator = subcommand["operator"]
         logging.debug("Operator: " + operator)
         if operator == "set":
@@ -46,7 +45,7 @@ class AliasHandler(AdminDefaultHandler):
 
     def set_alias(self, subcommand: str):
         processed_command = subcommand.strip()[3:].strip()
-        if self.SET_REGEX.match(processed_command) == None:
+        if self.SET_REGEX.match(processed_command) is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Invalid command syntax. Example:\n\n/alias set valname val1,val2,val3")
             return
 
@@ -63,13 +62,13 @@ class AliasHandler(AdminDefaultHandler):
         if not exists and len(aliases) >= constants.MAX_ALIAS_PER_GROUP:
             self.updater.bot.send_message(self.update.effective_chat.id, "You've reached the max amount of aliases that can be created")
             return
-        
+
         self.dbw.set_alias_on_group(self.update.effective_chat.id, alias_name, value)
         self.updater.bot.send_message(self.update.effective_chat.id, "Alias saved")
 
     def clear_alias(self, subcommand: str):
         processed_command = subcommand.strip()[5:].strip()
-        if self.CLEAR_REGEX.match(processed_command) == None:
+        if self.CLEAR_REGEX.match(processed_command) is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Invalid command syntax. Example:\n\n/alias clear valname")
             return
 
@@ -79,21 +78,20 @@ class AliasHandler(AdminDefaultHandler):
 
     def get_alias(self, subcommand: str):
         processed_command = subcommand.strip()[3:].strip()
-        if self.GET_REGEX.match(processed_command) == None:
+        if self.GET_REGEX.match(processed_command) is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Invalid command syntax. Example:\n\n/alias get valname")
             return
 
         alias_name = processed_command
         value = self.dbw.get_alias_on_group(self.update.effective_chat.id, alias_name)
-        if value == None:
+        if value is None:
             self.updater.bot.send_message(self.update.effective_chat.id, "Alias not found")
             return
         self.updater.bot.send_message(self.update.effective_chat.id, value.value)
 
-
     def list_alias(self, subcommand: str):
         values = self.dbw.get_all_aliases_on_group(self.update.effective_chat.id)
-        if values == None or len(values) == 0:
+        if values is None or len(values) == 0:
             self.updater.bot.send_message(self.update.effective_chat.id, "No aliases found")
             return
         value = ""
