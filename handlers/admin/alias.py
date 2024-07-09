@@ -1,6 +1,7 @@
 import logging
 import re
 from handlers import utils
+from handlers import constants
 
 from db_wrapper import DBWrapper
 from telegram import Update
@@ -51,6 +52,18 @@ class AliasHandler(AdminDefaultHandler):
 
         alias_name = processed_command.split(" ")[0]
         value = processed_command[len(alias_name):].strip()
+        # Validate it don't exceed the maximun
+        aliases = self.dbw.get_all_aliases_on_group(self.update.effective_chat.id)
+        # if it already exists it means it's an edit, which is allowed
+        exists = False
+        for alias in aliases:
+            if alias.name == alias_name:
+                exists = True
+                break
+        if not exists and len(aliases) >= constants.MAX_ALIAS_PER_GROUP:
+            self.updater.bot.send_message(self.update.effective_chat.id, "You've reached the max amount of aliases that can be created")
+            return
+        
         self.dbw.set_alias_on_group(self.update.effective_chat.id, alias_name, value)
         self.updater.bot.send_message(self.update.effective_chat.id, "Alias saved")
 

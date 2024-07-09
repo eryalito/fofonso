@@ -1,6 +1,7 @@
 import logging
 import re
 from handlers import utils
+from handlers import constants
 
 from db_wrapper import DBWrapper
 from telegram import Update
@@ -52,6 +53,18 @@ class VariableHandler(AdminDefaultHandler):
         variable_name = processed_command.split(" ")[0]
         value = processed_command[len(variable_name):].strip()
         processed_values = value.split(",")
+        # Validate it don't exceed the maximun
+        variables = self.dbw.get_all_variables_on_group(self.update.effective_chat.id)
+        # if it already exists it means it's an edit, which is allowed
+        exists = False
+        for variable in variables:
+            if variable.name == variable_name:
+                exists = True
+                break
+        if not exists and len(variables) >= constants.MAX_VARIABLES_PER_GROUP:
+            self.updater.bot.send_message(self.update.effective_chat.id, "You've reached the max amount of variables that can be created")
+            return
+
         self.dbw.set_variable_on_group(self.update.effective_chat.id, variable_name, processed_values)
         self.updater.bot.send_message(self.update.effective_chat.id, "Variable saved")
 
