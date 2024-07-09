@@ -2,6 +2,7 @@ from db_wrapper import DBWrapper
 from telegram import Update
 from telegram.ext import CallbackContext, CommandHandler, MessageHandler, BaseFilter
 
+
 class CustomHandler(CommandHandler):
 
     def __init__(self, command: str, callback: any, dbw: DBWrapper):
@@ -13,6 +14,7 @@ class CustomHandler(CommandHandler):
         print(update.effective_chat.type)
         if update.effective_chat.type == 'group' or update.effective_chat.type == 'supergroup':
             self.dbw.add_user_to_group(update.effective_message.from_user.id, update.effective_chat.id)
+
 
 class CustomMessageHandler(MessageHandler):
 
