@@ -1,8 +1,7 @@
 import logging
 import os
 
-from telegram.ext import Updater
-
+from telegram.ext import Application
 from db_wrapper import DBWrapper
 from handlers.user.help import HelpHandler
 from handlers.user.admins import AdminsHandler
@@ -26,19 +25,18 @@ logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s
 
 
 dbw = DBWrapper(DB_FILE)
-updater = Updater(TOKEN, use_context=True)
-dispatcher = updater.dispatcher
-COMMANDS = [HelpHandler(dbw, updater),
+application = Application.builder().token(TOKEN).build()
+COMMANDS = [HelpHandler(dbw, application),
             # Admins
-            AdminsHandler(dbw, updater), AllHandler(dbw, updater), DiceHandler(dbw, updater), AliasHandler(dbw, updater),
+            AdminsHandler(dbw, application), AllHandler(dbw, application), DiceHandler(dbw, application), AliasHandler(dbw, application),
             # User
-            ResetHandler(dbw, updater), VariableHandler(dbw, updater), FormatHandler(dbw, updater), GithubHandler(dbw, updater),
+            ResetHandler(dbw, application), VariableHandler(dbw, application), FormatHandler(dbw, application), GithubHandler(dbw, application),
             # Exclamation command
-            ExclamationHandler(dbw, updater),
+            ExclamationHandler(dbw, application),
             # Default
-            VoidHandler(dbw, updater)]
+            VoidHandler(dbw, application)]
 
 for command in COMMANDS:
-    dispatcher.add_handler(command)
+    application.add_handler(command)
 
-updater.start_polling()
+application.run_polling()

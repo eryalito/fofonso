@@ -1,6 +1,6 @@
 from db_wrapper import DBWrapper
 from telegram import Update
-from telegram.ext import CallbackContext, CommandHandler, MessageHandler, BaseFilter
+from telegram.ext import CallbackContext, CommandHandler, MessageHandler, filters
 
 
 class CustomHandler(CommandHandler):
@@ -18,7 +18,7 @@ class CustomHandler(CommandHandler):
 
 class CustomMessageHandler(MessageHandler):
 
-    def __init__(self, filter: BaseFilter, callback: any, dbw: DBWrapper):
+    def __init__(self, filter: filters.BaseFilter, callback: any, dbw: DBWrapper):
         super(CustomMessageHandler, self).__init__(filter, callback)
         self.dbw = dbw
 
