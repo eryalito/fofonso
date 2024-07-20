@@ -2,7 +2,7 @@ import logging
 
 from db_wrapper import DBWrapper
 from telegram import Update
-from telegram.ext import CallbackContext, Updater
+from telegram.ext import CallbackContext, Application
 
 from handlers.user.custom_handler import CustomHandler
 
@@ -11,11 +11,11 @@ class AllHandler(CustomHandler):
 
     COMMAND = 'all'
 
-    def __init__(self, dbw: DBWrapper, updater: Updater):
+    def __init__(self, dbw: DBWrapper, application: Application):
         super(AllHandler, self).__init__(self.COMMAND, self.run, dbw)
-        self.updater = updater
+        self.application = application
 
-    def run(self, update: Update, context: CallbackContext):
+    async def run(self, update: Update, context: CallbackContext):
         logging.info(self.COMMAND + ' command has been called: ' + str(update.effective_chat.id))
         self.pre_command(update, context)
         if update.effective_message.chat.type == 'group' or update.effective_message.chat.type == 'supergroup':
@@ -25,4 +25,4 @@ class AllHandler(CustomHandler):
                     users_str += '@' + user['username'] + ' '
             if users_str:
                 users_str = users_str[:-1]
-                self.updater.bot.send_message(update.effective_chat.id, users_str)
+                await self.application.bot.sendMessage(update.effective_chat.id, users_str)

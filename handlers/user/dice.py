@@ -4,7 +4,7 @@ import re
 
 from db_wrapper import DBWrapper
 from telegram import Update
-from telegram.ext import CallbackContext, Updater
+from telegram.ext import CallbackContext, Application
 
 from handlers.user.custom_handler import CustomHandler
 
@@ -17,11 +17,11 @@ class DiceHandler(CustomHandler):
     DICE_MIN = 1
     DICE_MAX = 6
 
-    def __init__(self, dbw: DBWrapper, updater: Updater):
+    def __init__(self, dbw: DBWrapper, application: Application):
         super(DiceHandler, self).__init__(self.COMMAND, self.run, dbw)
-        self.updater = updater
+        self.application = application
 
-    def run(self, update: Update, context: CallbackContext):
+    async def run(self, update: Update, context: CallbackContext):
         logging.info(self.COMMAND + ' command has been called: ' + str(update.effective_chat.id))
         self.pre_command(update, context)
         command = update.message.text
@@ -35,7 +35,7 @@ class DiceHandler(CustomHandler):
             min = int(min_string)
             max = int(max_string)
             if min >= max:
-                self.updater.bot.send_message(update.effective_chat.id, "Min must be lower then Max")
+                await self.application.bot.sendMessage(update.effective_chat.id, "Min must be lower then Max")
                 return
         rand = random.randint(min, max)
-        self.updater.bot.send_message(update.effective_chat.id, str(rand))
+        await self.application.bot.sendMessage(update.effective_chat.id, str(rand))

@@ -3,7 +3,7 @@ from handlers import utils
 
 from db_wrapper import DBWrapper
 from telegram import Update
-from telegram.ext import CallbackContext, Updater
+from telegram.ext import CallbackContext, Application
 
 from handlers.user.custom_handler import CustomHandler
 
@@ -142,17 +142,17 @@ Example:
         '''
     }
 
-    def __init__(self, dbw: DBWrapper, updater: Updater):
+    def __init__(self, dbw: DBWrapper, application: Application):
         super(HelpHandler, self).__init__(self.COMMAND, self.run, dbw)
-        self.updater = updater
+        self.application = application
 
-    def run(self, update: Update, context: CallbackContext):
+    async def run(self, update: Update, context: CallbackContext):
         logging.info(self.COMMAND + ' command has been called: ' + str(update.effective_chat.id))
         self.pre_command(update, context)
         subcommand = utils.get_subcommand_from_command(self.COMMAND, update.message.text)
         if subcommand is None:
-            self.updater.bot.send_message(update.effective_chat.id, self.TEXT)
+            await self.application.bot.sendMessage(update.effective_chat.id, self.TEXT)
         elif subcommand["operator"] in self.EXPLANATIONS.keys():
-            self.updater.bot.send_message(update.effective_chat.id, self.EXPLANATIONS.get(subcommand["operator"]))
+            await self.application.bot.sendMessage(update.effective_chat.id, self.EXPLANATIONS.get(subcommand["operator"]))
         else:
-            self.updater.bot.send_message(update.effective_chat.id, "Not recognized command. Use /help to get more info.")
+            await self.application.bot.sendMessage(update.effective_chat.id, "Not recognized command. Use /help to get more info.")
