@@ -11,7 +11,7 @@ You can add Fofonso to your group by searching for `@FofonsoBot` on Telegram.
 - `/help`: Show all commands available.
 - `/dice`: Roll a dice. You can specify the number of faces.
 - `/all`: Mention all users in the group.
-- `/admin`: Mention all admins in the group.
+- `/admins`: Mention all admins in the group.
 
 ### Admin commands
 
